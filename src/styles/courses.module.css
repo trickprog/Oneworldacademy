@@ -1,0 +1,133 @@
+.courses {
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid red; */
+}
+
+.courses .pageTitle {
+    margin-top: 200px;
+}
+
+.courses h1, h2, h4 {
+    text-align: center;
+}
+
+.courses p{
+    width: 40%;
+    margin: auto;
+    font-size: 22px;
+    text-align: center;
+    color: gray;
+}
+
+.highlighted {
+    width: 60%;
+    margin: 50px auto;
+    flex-direction: column;
+    justify-content: center;
+    /* border: 1px solid blue; */
+}
+
+.title {
+    color: gray;
+    margin: 5px;
+    height: 10%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 20px;
+    text-align: center;
+    /* border: 1px solid red; */
+}
+
+.courses .description {
+    width: 90%;
+    height: 35%;
+    font-size: 18px;
+    overflow: hidden;
+    white-space: initial;
+    /* border: 1px solid red; */
+}
+
+.price {
+    font-size: 20px;
+    color: red;
+    margin: 5px;
+    height: 10%;
+    /* border: 1px solid red;     */
+}
+
+.courseTitle {
+    color: black;
+    margin: 5px;
+    height: 10%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 20px;
+    text-align: center;
+    /* border: 1px solid red; */
+}
+
+.rating {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    text-align: center;
+    color: goldenrod;
+}
+
+.reviews {
+    color: gray;
+    text-align: center;
+    font-size: 18px;
+    /* border: 1px solid red; */
+}
+
+.courses .package, .courses .freePackage {
+    font-size: 16px;
+    overflow: hidden;
+    white-space: initial;
+    text-overflow: ellipsis;
+    /* bordeR: 1px solid red; */
+}
+
+.courses .freePackage {
+    font-size: 24px;
+}
+
+.packageButton {
+    border: none;
+    height: 30px;
+    font-size: 20px;
+    background-color: #e1bb29;
+}
+
+.packageButton:hover {
+    background-color: #ceac25;
+}
+
+@media (min-width: 800px) {
+    .highlighted {
+        width: 90%;
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 900px) {
+    .highlighted {
+        width: 80%;
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 1000px) {
+    .highlighted {
+        width: 70%;
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 1100px) {
+    .highlighted {
+        width: 60%;
+        flex-direction: row;
+    }
+}

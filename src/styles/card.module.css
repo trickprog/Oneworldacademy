@@ -1,0 +1,22 @@
+.card {
+    width: 270px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    transition: transform 0.5s;
+    margin: 15px;
+    box-shadow: 5px 2px 10px lightgray;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;    
+    /* margin: auto; */
+    /* margin-top: 50px; */
+    /* margin-bottom: 50px; */
+}
+
+.card:hover {
+    -ms-transform: scale(1.5); /* IE 9 */
+    -webkit-transform: scale(1.5); /* Safari 3-8 */
+    transform: scale(1.05);
+    cursor: default;
+}

@@ -1,0 +1,23 @@
+.card {
+    height: 180px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;
+    transition: transform 0.5s;
+    margin-bottom: 20px;
+    box-shadow: 5px 2px 10px lightgray;
+    /* border-top-left-radius: 30px; */
+    /* border-top-right-radius: 30px;     */
+}
+
+.card img {
+    width: 150px;
+    height: 70%;
+    margin-right: 10px;
+    border-radius: 0;
+}
+
+.card div {
+    height: 70%;
+}
