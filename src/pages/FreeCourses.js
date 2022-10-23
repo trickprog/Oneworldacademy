@@ -56,7 +56,7 @@ const FreeCourses = (props) => {
       <div className={styles.highlighted + " container-center"}>
       <NavLink to="/course/PL55BQjLK6ZmhyGf8mdqyVFl7bAsLOK-CF"  style={{ textDecoration: "none" }}>     <Card onClick={openCourse}>
           <img src={uxImg} alt=""></img>
-          <h4 className={styles.courseTitle}>UI/UX </h4>
+          <h4 className={styles.courseTitle}>Graphic Designing </h4>
           <span className={styles.rating}>
             <IoStar />
             <IoStar />
@@ -82,7 +82,7 @@ const FreeCourses = (props) => {
           </Card>
         </NavLink>
 
-        <NavLink to="/course/PL55BQjLK6ZmhY2ZihX1eq_TrlfibZbVzg"  style={{ textDecoration: "none" }}>
+        <NavLink to="/course/PL55BQjLK6ZmiCOlnaTqnJTpeA3Bsf1_B8"  style={{ textDecoration: "none" }}>
           <Card>
             <img src={webImg} alt=""></img>
             <h4 className={styles.courseTitle}>Java</h4>

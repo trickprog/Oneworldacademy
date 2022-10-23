@@ -4,7 +4,9 @@ import styles from "../styles/courseVideo.module.css";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
-const CourseVideo = (props) => {
+import ReactPlayer from "react-player/youtube";
+
+export default function CourseVideo() {
   const navigate = useNavigate();
 
   const openCourse = () => navigate("/login");
@@ -24,14 +26,28 @@ const CourseVideo = (props) => {
       .then((video) => {
         setvideo(video.data.items);
         setvideoid(video.data.items[0].snippet.resourceId.videoId);
-        setvideotumbnail(video.data.items[0].snippet.thumbnails.standard.url)
+        setvideotumbnail(video.data.items[0].snippet.thumbnails.standard.url);
       });
   };
   const videoswitch = (id) => {
     console.log(id);
     setvideoid(id[0]);
-    setvideotumbnail(id[1])
+    setvideotumbnail(id[1]);
   };
+
+  const appendvideo = () => {
+    for (let i = 0; i < video.length; i++) {
+      if (videoid === video[i].snippet.resourceId.videoId) {
+        i++;
+        setvideoid(video[i].snippet.resourceId.videoId);
+        break;
+      }
+    }
+  };
+  console.log(videoid);
+
+let rnd=Math.random() < 0.5;
+console.log(rnd)
 
   useEffect(() => {
     getvideos();
@@ -53,23 +69,30 @@ const CourseVideo = (props) => {
                     </div>
                   </div>
                 </div>
-                <img
-                  src={videotumbnail}
-                  style={{ border: "none",}}
-                />
+                <img src={videotumbnail} style={{ border: "none" }} />
               </>
             ) : (
-              <iframe
-                title="video"
+              <ReactPlayer
+                controls={true}
+                onEnded={appendvideo}
+                allowfullscreen="allowfullscreen"
                 width="100%"
                 height="100%"
-                src={`https://www.youtube.com/embed/${videoid}`}
-                style={{ border: "none",  }}
-                allowfullscreen="allowfullscreen"
-              ></iframe>
+                url={`https://www.youtube.com/watch?v=${videoid}`}
+              />
+              // <iframe
+
+              //   title="video"
+              //
+              //
+              //   src={`https://www.youtube.com/embed/`}
+              //   style={{ border: "none",  }}
+              //   allowfullscreen="allowfullscreen"
+              //   onEnded={()=>appendvideo}
+              // ></iframe>
             )}
           </div>
-          <div className={styles.commentSection}>
+{       rnd===false?   <div className={styles.commentSection}>
             <h2>Comments</h2>
             {comments.map((comment) => {
               return (
@@ -79,7 +102,18 @@ const CourseVideo = (props) => {
                 </div>
               );
             })}
-          </div>
+          </div>:
+          <div className={styles.commentSection}>
+            <h2>Chat Box</h2>
+            {comments.map((comment) => {
+              return (
+                <div className={styles.comment}>
+                  <span>{comment.author}</span>
+                  <p>{comment.text}</p>
+                </div>
+              );
+            })}
+          </div>}
         </div>
         <div className={styles.playlist}>
           {video.map((val, ind) => {
@@ -87,7 +121,12 @@ const CourseVideo = (props) => {
               return (
                 <VideoCard
                   key={ind}
-                  onClick={() => videoswitch([val.snippet.resourceId.videoId,val.snippet.thumbnails.standard.url])}
+                  onClick={() =>
+                    videoswitch([
+                      val.snippet.resourceId.videoId,
+                      val.snippet.thumbnails.standard.url,
+                    ])
+                  }
                 >
                   <img src={val.snippet.thumbnails.standard.url} alt="abc" />
                   <div>{val.snippet.title}</div>
@@ -100,6 +139,4 @@ const CourseVideo = (props) => {
       </div>
     </>
   );
-};
-
-export default CourseVideo;
+}

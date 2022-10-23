@@ -42,7 +42,7 @@ const PaidCourses = (props) => {
         </NavLink>
 
         <NavLink
-          to="/course/PL55BQjLK6Zmg_6X9DLVWvubwIX"
+          to="/course/PL55BQjLK6Zmg_6X9DLVWvubwIXXZj6E-j"
           style={{ textDecoration: "none" }}
         >
           {" "}
@@ -70,7 +70,7 @@ const PaidCourses = (props) => {
           {" "}
           <Card onClick={openCourse}>
             <img src={uxImg} alt=""></img>
-            <h4 className={styles.courseTitle}>UI/UX </h4>
+            <h4 className={styles.courseTitle}>Graphic Designing</h4>
             <span className={styles.rating}>
               <IoStar />
               <IoStar />
