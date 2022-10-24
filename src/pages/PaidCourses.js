@@ -46,7 +46,7 @@ const PaidCourses = (props) => {
           return (
             <NavLink
               key={ind}
-              to={`/course/${val.playlistlink}/${val.id}`}
+              to={`/course/${val.playlistlink}`}
               style={{ textDecoration: "none" }}
             >
               <Card >

@@ -19,7 +19,7 @@ root.render(
         <Route path="/free-courses" element={<FreeCourses />} />
         <Route path="/paid-courses" element={<PaidCourses />} />{" "}
         <Route path="/teachers" element={<Teachers />} />
-        <Route path="/course/:playlistid/:courseid" element={<CourseVideo />} />
+        <Route path="/course/:playlistid" element={<CourseVideo />} />
         <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={<Login/>}/>
       </Routes>
