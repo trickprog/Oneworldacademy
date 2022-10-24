@@ -6,9 +6,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import ReactPlayer from "react-player/youtube";
 
-export default function CourseVideo() {
-  const navigate = useNavigate();
 
+export default function CourseVideo() {
+
+  const navigate = useNavigate();
+ 
   const openCourse = () => navigate("/login");
   const loginchk = localStorage.getItem("email");
   const [video, setvideo] = useState([]);
@@ -18,6 +20,11 @@ export default function CourseVideo() {
   const videos = [{ description: "This is another video" }];
   const { playlistid } = useParams();
   const key = "AIzaSyDHBFveODGxnW5l0FdQIcHq6bJR1EMJXjA";
+
+
+  
+
+
   const getvideos = () => {
     axios
       .get(
@@ -29,6 +36,8 @@ export default function CourseVideo() {
         setvideotumbnail(video.data.items[0].snippet.thumbnails.standard.url);
       });
   };
+
+
   const videoswitch = (id) => {
     console.log(id);
     setvideoid(id[0]);
@@ -44,15 +53,16 @@ export default function CourseVideo() {
       }
     }
   };
-  console.log(videoid);
+
 
 let rnd=Math.random() < 0.5;
-console.log(rnd)
+
 
   useEffect(() => {
     getvideos();
+
   }, []);
-  console.log(video);
+
   return (
     <>
       <Header />

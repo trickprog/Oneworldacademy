@@ -1,6 +1,6 @@
 import Carousel from "../components/Carousel";
 import Header from "../components/Header";
-import background1 from "../assets/backgroundImg";
+import background1 from "../assets/backgroundImg.jpg";
 import background2 from "../assets/background2.jpg";
 import background3 from "../assets/background3.jpg";
 import background4 from "../assets/background4.jpg";

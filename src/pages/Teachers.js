@@ -1,8 +1,8 @@
 import Header from "../components/Header";
 import Card from "../components/Card";
-import teacher1 from "../assets/teacher1";
-import teacher2 from "../assets/teacher2";
-import socialMedia from "../assets/socialMedia";
+import teacher1 from "../assets/teacher1.jpg";
+import teacher2 from "../assets/teacher2.jpg";
+import socialMedia from "../assets/socialMedia.jpg";
 import styles from "../styles/teachers.module.css";
 
 const Teachers = (props) => {

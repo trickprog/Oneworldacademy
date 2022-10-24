@@ -2,16 +2,28 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { IoStar } from "react-icons/io5";
 import Card from "../components/Card";
 import styles from "../styles/courses.module.css";
-
-import webImg from "../assets/webImg";
-import mlImg from "../assets/mlImg";
-import uxImg from "../assets/uxImg";
-import programImg from "../assets/programImg";
+import React, { useState, useEffect } from "react";
+import webImg from "../assets/webImg.jpg";
+import mlImg from "../assets/mlImg.jpg";
+import uxImg from "../assets/uxImg.jpg";
+import programImg from "../assets/programImg.jpg";
 import Header from "../components/Header";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../config";
 
 const FreeCourses = (props) => {
   const navigate = useNavigate();
+  const [courses, setcourses] = useState([]);
+  const getcourses = async () => {
+    const ref = collection(db, "courses");
+    const gettingdata = await getDocs(ref);
+    console.log(gettingdata);
+    setcourses(gettingdata.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
 
+  useEffect(() => {
+    getcourses();
+  }, []);
   const openCourse = () => navigate("/course");
 
   return (
@@ -24,19 +36,28 @@ const FreeCourses = (props) => {
       </p>
 
       <div className={styles.highlighted + " container-center"}>
-        <NavLink to="/course/PL55BQjLK6Zmi4jmNOnEBmONkDAtG2LJDK"  style={{ textDecoration: "none" }}>
-          <Card onClick={openCourse}>
-            <img src={mlImg} alt=""></img>
-            <h4 className={styles.title}>Machine Learning</h4>
-            <p className={styles.description}>
-              A very very good Machine Learning course indeed. Good very good. A
-              very very good Machine Learning course indeed. Good very good. A
-              very very good Machine Learning course indeed. Good very good.
-            </p>
-            <span className={styles.price}>Free</span>
-          </Card>
-        </NavLink>
-        <NavLink to="/course/PL55BQjLK6ZmhszWuypQ2kIjE9As2wrUIC"  style={{ textDecoration: "none" }}>
+        {courses.map((val, ind) => {
+          
+            return (
+              <NavLink
+                key={ind}
+                to={`/course/${val.playlistlink}`}
+                style={{ textDecoration: "none" }}
+              >
+                <Card onClick={openCourse}>
+                  <img src={val.backimg} alt=""></img>
+                  <h4 className={styles.title}>{val.title}</h4>
+                  <p className={styles.description}>{val.description}</p>
+                  <span className={styles.price}>{val.price}</span>
+                </Card>
+              </NavLink>
+            );
+          
+        })}
+        {/* <NavLink
+          to="/course/PL55BQjLK6ZmhszWuypQ2kIjE9As2wrUIC"
+          style={{ textDecoration: "none" }}
+        >
           <Card onClick={openCourse}>
             <img src={webImg} alt=""></img>
             <h4 className={styles.title}>Web Development</h4>
@@ -45,7 +66,7 @@ const FreeCourses = (props) => {
             </p>
             <span className={styles.price}>Free</span>
           </Card>
-        </NavLink>
+        </NavLink> */}
       </div>
 
       <h2>Courses in Demand</h2>
@@ -54,49 +75,31 @@ const FreeCourses = (props) => {
         top courses in demand
       </p>
       <div className={styles.highlighted + " container-center"}>
-      <NavLink to="/course/PL55BQjLK6ZmhyGf8mdqyVFl7bAsLOK-CF"  style={{ textDecoration: "none" }}>     <Card onClick={openCourse}>
-          <img src={uxImg} alt=""></img>
-          <h4 className={styles.courseTitle}>Graphic Designing </h4>
-          <span className={styles.rating}>
-            <IoStar />
-            <IoStar />
-            <IoStar />
-            <IoStar />
-            <IoStar />
-          </span>
-          <span className={styles.reviews}>10,8845</span>
-        </Card>
-        </NavLink>
-        <NavLink to="/course/PL55BQjLK6Zmi9ckHhDAquE1-4P3Vsa9Zi"  style={{ textDecoration: "none" }}>
-          <Card onClick={openCourse}>
-            <img src={programImg} alt=""></img>
-            <h4 className={styles.courseTitle}>C++ Programming</h4>
-            <span className={styles.rating}>
-              <IoStar />
-              <IoStar />
-              <IoStar />
-              <IoStar />
-              <IoStar />
-            </span>
-            <span className={styles.reviews}>10,9343</span>
-          </Card>
-        </NavLink>
-
-        <NavLink to="/course/PL55BQjLK6ZmiCOlnaTqnJTpeA3Bsf1_B8"  style={{ textDecoration: "none" }}>
-          <Card>
-            <img src={webImg} alt=""></img>
-            <h4 className={styles.courseTitle}>Java</h4>
-            <span className={styles.rating}>
-              <IoStar />
-              <IoStar />
-              <IoStar />
-              <IoStar />
-              <IoStar />
-            </span>
-            <span className={styles.reviews}>10,9345</span>
-          </Card>
-        </NavLink>
+        {courses.map((val, ind) => {
+          if (val.coursedemand >= 10) {
+          let rate=val.rating
+          console.log(rate)
+          return (
+            <NavLink key={ind} to={`/course/${val.playlistlink}`} style={{ textDecoration: "none" }}>
+              {" "}
+              <Card onClick={openCourse}>
+                <img src={val.backimg} alt=""></img>
+                <h4 className={styles.courseTitle}>{val.title}</h4>
+                <span className={styles.rating}>
+                 {rate>= 1? <IoStar />:<div></div>}
+                 {rate>= 2? <IoStar />:<div></div>}
+                 {rate>= 3? <IoStar />:<div></div>}
+                 {rate>= 4? <IoStar />:<div></div>}
+                 {rate>= 5? <IoStar />:<div></div>}
+                </span>
+                <span className={styles.reviews}>{val.coursedemand}</span>
+              </Card>
+            </NavLink>
+          );
+          }
+        })}
       </div>
+
       <h2>Affordabale Packages</h2>
       <div className={styles.highlighted + " container-center"}>
         <Card

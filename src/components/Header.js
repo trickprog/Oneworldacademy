@@ -1,10 +1,15 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "../styles/header.module.css";
-import logo from "../assets/logo";
+import logo from "../assets/logo.jpg";
 import DropdownMenu from "./DropdownMenu";
+
+
 
 const Header = (props) => {
   const navigate = useNavigate();
+
+
+
   const email = localStorage.getItem("email");
 const logout=()=>{
   localStorage.clear();
