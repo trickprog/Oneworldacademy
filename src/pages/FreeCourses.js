@@ -41,7 +41,7 @@ const FreeCourses = (props) => {
             return (
               <NavLink
                 key={ind}
-                to={`/course/${val.playlistlink}`}
+                to={`/course/courses/${val.playlistlink}/${val.id}`}
                 style={{ textDecoration: "none" }}
               >
                 <Card onClick={openCourse}>
@@ -80,7 +80,7 @@ const FreeCourses = (props) => {
           let rate=val.rating
           console.log(rate)
           return (
-            <NavLink key={ind} to={`/course/${val.playlistlink}`} style={{ textDecoration: "none" }}>
+            <NavLink key={ind} to={`/course/${val.playlistlink}/${val.id}`} style={{ textDecoration: "none" }}>
               {" "}
               <Card onClick={openCourse}>
                 <img src={val.backimg} alt=""></img>

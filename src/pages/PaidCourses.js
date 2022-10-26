@@ -8,16 +8,11 @@ import mlImg from "../assets/mlImg.jpg";
 import uxImg from "../assets/uxImg.jpg";
 import programImg from "../assets/programImg.jpg";
 import Header from "../components/Header";
-
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../config";
-
-
+import StripeCheckout from "react-stripe-checkout";
 const PaidCourses = (props) => {
   const navigate = useNavigate();
-
-
-
 
   const [courses, setcourses] = useState([]);
   const getcourses = async () => {
@@ -34,22 +29,21 @@ const PaidCourses = (props) => {
   return (
     <div className={styles.courses + ""}>
       <Header />
-      <h1 className={styles.pageTitle}>Our Courses</h1>    
+      <h1 className={styles.pageTitle}>Our Courses</h1>
       <p>
         We have a variety of courses related to any of desiring discilpine
         rather its a heavy skill set or a raw concept of any aspect
       </p>
 
       <div className={styles.highlighted + " container-center"}>
-      {courses.map((val, ind) => {
-          
+        {courses.map((val, ind) => {
           return (
             <NavLink
               key={ind}
-              to={`/course/${val.playlistlink}`}
+              to={`/course/paidcourses/${val.playlistlink}/${val.id}`}
               style={{ textDecoration: "none" }}
             >
-              <Card >
+              <Card>
                 <img src={val.backimg} alt=""></img>
                 <h4 className={styles.title}>{val.title}</h4>
                 <p className={styles.description}>{val.description}</p>
@@ -57,9 +51,7 @@ const PaidCourses = (props) => {
               </Card>
             </NavLink>
           );
-        
-      })}
-
+        })}
       </div>
 
       <h2>Courses in Demand</h2>
@@ -68,28 +60,31 @@ const PaidCourses = (props) => {
         top courses in demand
       </p>
       <div className={styles.highlighted + " container-center"}>
-
-      {courses.map((val, ind) => {
+        {courses.map((val, ind) => {
           if (val.coursedemand >= 10) {
-          let rate=val.rating
-          console.log(rate)
-          return (
-            <NavLink key={ind} to={`/course/${val.playlistlink}`} style={{ textDecoration: "none" }}>
-              {" "}
-              <Card >
-                <img src={val.backimg} alt=""></img>
-                <h4 className={styles.courseTitle}>{val.title}</h4>
-                <span className={styles.rating}>
-                 {rate>= 1? <IoStar />:<div></div>}
-                 {rate>= 2? <IoStar />:<div></div>}
-                 {rate>= 3? <IoStar />:<div></div>}
-                 {rate>= 4? <IoStar />:<div></div>}
-                 {rate>= 5? <IoStar />:<div></div>}
-                </span>
-                <span className={styles.reviews}>{val.coursedemand}</span>
-              </Card>
-            </NavLink>
-          );
+            let rate = val.rating;
+            console.log(rate);
+            return (
+              <NavLink
+                key={ind}
+                to={`/course/${val.playlistlink}/${val.id}`}
+                style={{ textDecoration: "none" }}
+              >
+                {" "}
+                <Card>
+                  <img src={val.backimg} alt=""></img>
+                  <h4 className={styles.courseTitle}>{val.title}</h4>
+                  <span className={styles.rating}>
+                    {rate >= 1 ? <IoStar /> : <div></div>}
+                    {rate >= 2 ? <IoStar /> : <div></div>}
+                    {rate >= 3 ? <IoStar /> : <div></div>}
+                    {rate >= 4 ? <IoStar /> : <div></div>}
+                    {rate >= 5 ? <IoStar /> : <div></div>}
+                  </span>
+                  <span className={styles.reviews}>{val.coursedemand}</span>
+                </Card>
+              </NavLink>
+            );
           }
         })}
       </div>
@@ -134,7 +129,9 @@ const PaidCourses = (props) => {
           <p className={styles.package}>Limited Courses</p>
           <p className={styles.package}>Complete Lectures</p>
           <p className={styles.package}>AI Assistance</p>
-          <button className={styles.packageButton}>Buy Now</button>
+          <StripeCheckout stripeKey={process.env.REACT_APP_STRIPE_KEY} token="" amount={300*100} name="Buy Package">
+            <button className={styles.packageButton}>Buy Now</button>
+          </StripeCheckout>
         </Card>
       </div>
     </div>

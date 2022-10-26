@@ -16,8 +16,9 @@ export default function Register() {
  
       signInWithEmailAndPassword( auth,email, password)
         .then((userCredential) => {
-          console.log(userCredential._tokenResponse.email);
+          console.log(userCredential.user.uid);
           localStorage.setItem('email',userCredential._tokenResponse.email)
+          localStorage.setItem('Uid',userCredential.user.uid)
           setred(`${userCredential._tokenResponse.email} Logged In`);
           console.log("User log in");
         })
