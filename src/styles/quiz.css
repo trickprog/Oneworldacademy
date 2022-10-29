@@ -1,0 +1,13 @@
+.mcq{
+    display: flex;
+}
+.mcq input{
+    width: 100px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.questions{
+    text-align: left;
+    margin-left: 40px;
+}
