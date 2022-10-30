@@ -22,19 +22,28 @@ import { db } from "../config";
 import { IoVolumeMediumOutline } from "react-icons/io5";
 export default function CourseVideo(props) {
   const navigate = useNavigate();
-
+  const [chkquiz, setchkquiz] = useState(false);
   const openCourse = () => navigate("/login");
   const loginchk = localStorage.getItem("email");
   const [video, setvideo] = useState([]);
 
-  // const [user, setuser] = useState([]);
+  const [user, setuser] = useState([]);
   const [videoid, setvideoid] = useState("");
   const [videotumbnail, setvideotumbnail] = useState("");
+  const [quiznumber, setquiznumber] = useState("");
   const comments = [{ text: "Hello This is a comment", author: "User123" }];
   const videos = [{ description: "This is another video" }];
-  const { playlistid, course, courseid, uservideoid } = useParams();
+
+  const { playlistid, course, courseid } = useParams();
+
   const key = "AIzaSyDHBFveODGxnW5l0FdQIcHq6bJR1EMJXjA";
-  const [open, setopen] = useState(false);
+
+  const getusersid = async () => {
+    const id = localStorage.getItem("Uid");
+    const ref = query(collection(db, "users"), where("userid", "==", id));
+    const gettingdata = await getDocs(ref);
+    setuser(gettingdata.docs.map((doc) => doc.data()));
+  };
 
   const getvideos = () => {
     axios
@@ -45,16 +54,8 @@ export default function CourseVideo(props) {
         setvideoid(video.data.items[0].snippet.resourceId.videoId);
         setvideo(video.data.items);
         setvideotumbnail(video.data.items[0].snippet.thumbnails.standard.url);
-        console.log(uservideoid);
-        console.log(video.data.items[4].snippet.resourceId.videoId);
-        if (uservideoid === video.data.items[4].snippet.resourceId.videoId) {
-          setopen(true);
-        } else {
-          setopen(false);
-        }
       });
   };
-
 
   const videoswitch = (id) => {
     setvideoid(id[0]);
@@ -64,15 +65,26 @@ export default function CourseVideo(props) {
   const appendvideo = () => {
     for (let i = 0; i < video.length; i++) {
       if (videoid === video[i].snippet.resourceId.videoId) {
-        i++;
-        setvideoid(video[i].snippet.resourceId.videoId);
-        addvideoid(video[i].snippet.resourceId.videoId);
+        let lastElement = video[video.length - 1];
+        if (
+          lastElement.snippet.resourceId.videoId ===
+          video[i].snippet.resourceId.videoId
+        ) {
+          setvideoid(video[i].snippet.resourceId.videoId);
+          addvideoid(video[i].snippet.resourceId.videoId);
+        } else {
+          i++;
+          setvideoid(video[i].snippet.resourceId.videoId);
+          addvideoid(video[i].snippet.resourceId.videoId);
+        }
+
         break;
       }
     }
   };
 
   const addvideoid = async (videoid) => {
+    console.log('moiz')
     const id = localStorage.getItem("userid");
     const ref = doc(db, "users", id);
     await updateDoc(ref, {
@@ -81,8 +93,6 @@ export default function CourseVideo(props) {
   };
 
   const createPdf = async () => {
-    console.log("moiz");
-    console.log(certificate);
     const exbytes = await fetch(certificate)
       .then((res) => {
         return res.arrayBuffer();
@@ -90,9 +100,8 @@ export default function CourseVideo(props) {
       .catch((err) => {
         console.log(err);
       });
-    console.log(exbytes);
+
     const pdfDoc = await PDFDocument.load(exbytes);
-    console.log(pdfDoc);
 
     const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
 
@@ -101,10 +110,10 @@ export default function CourseVideo(props) {
     const { width, height } = firstPage.getSize();
     const fontSize = 30;
     const fontSizeSub = 15;
-    const Name = "Your Full Name";
-    const course = "C++ Programming ";
+    const Name = user[0].name;
+    const course = "Web Development";
     firstPage.drawText(Name, {
-      x: 300,
+      x: 250,
       y: height - 11.2 * fontSize,
       size: fontSize,
       font: timesRomanFont,
@@ -131,24 +140,27 @@ export default function CourseVideo(props) {
     downloadLink.download = fileName;
     downloadLink.click();
   }
-  const quizupdate = () => {
-    if (uservideoid === video[4].snippet.resourceId.videoId) {
-      setopen(true);
-    } else {
-      setopen(false);
-    }
-  };
+
   // let rnd = Math.random() < 0.5;
-  // const getusersid = async () => {
-  //   const id = localStorage.getItem("Uid");
-  //   const ref =  query(collection(db, "users"), where("userid", "==", id));
-  //   const gettingdata = await getDocs(ref);
-  //   setuser(gettingdata.docs.map((doc) => doc.data()));
-  // };
 
   useEffect(() => {
+    getusersid();
     getvideos();
   }, []);
+  const quizupdate = () => {
+    console.log("quiz call");
+    console.log(user[0].videoid);
+    console.log(video[4].snippet.resourceId.videoId);
+    if (user[0].videoid === video[4].snippet.resourceId.videoId) {
+      setchkquiz(true);
+      setquiznumber("1");
+    }
+
+    if (user[0].videoid === video[9].snippet.resourceId.videoId) {
+      setchkquiz(true);
+      setquiznumber("2");
+    }
+  };
 
   return (
     <>
@@ -170,7 +182,7 @@ export default function CourseVideo(props) {
               </>
             ) : (
               <>
-                {open === true ? (
+                {chkquiz === true ? (
                   <>
                     <div className={styles.videodiv}>
                       <div className={styles.cardlogin}>
@@ -178,7 +190,7 @@ export default function CourseVideo(props) {
                           <h1>Attempt Your Quiz </h1>
 
                           <NavLink
-                            to={`/course/${course}/${playlistid}/${courseid}/${uservideoid}/quiz`}
+                            to={`/course/${course}/${playlistid}/${courseid}/${user[0].videoid}/quiz/${quiznumber}`}
                           >
                             <button onClick={openCourse}>Take Quiz</button>
                           </NavLink>
@@ -188,17 +200,66 @@ export default function CourseVideo(props) {
                     <img src={videotumbnail} style={{ border: "none" }} />
                   </>
                 ) : (
-                  <ReactPlayer
-                    controls={true}
-                    onEnded={() => {
-                      appendvideo();
-                      quizupdate();
-                    }}
-                    allowfullscreen="allowfullscreen"
-                    width="100%"
-                    height="100%"
-                    url={`https://www.youtube.com/watch?v=${videoid}`}
-                  />
+                  <>
+                    {user.length !== 0 ? (
+                      <>
+                        <ReactPlayer
+                          controls={true}
+                          onReady={() => {
+                            getusersid();
+                            quizupdate();
+                          }}
+                          onStart={() => {
+                            getusersid();
+                            quizupdate();
+                          }}
+                          onEnded={() => {
+                            appendvideo();
+                            quizupdate();
+                          }}
+                          allowfullscreen="allowfullscreen"
+                          width="100%"
+                          height="100%"
+                          url={`https://www.youtube.com/watch?v=${videoid}`}
+                        />
+                        {user[0].quiz1!==undefined ? (
+                          <div>
+                            <h1>Quiz 1 marks {user[0].quiz1}/20</h1>
+                          </div>
+                        ) : (
+                          <div></div>
+                        )}
+                        {user[0].quiz2!==undefined ? <div> <h1>Quiz 2 marks {user[0].quiz2}/20</h1></div> : <div></div>}
+
+                        {user[0].completed === true ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "end",
+                              marginTop: 10,
+                            }}
+                          >
+                            {" "}
+                            <button
+                              style={{
+                                padding: 10,
+                                borderRadius: 5,
+                                fontWeight: "bold",
+                                backgroundColor: "grey",
+                              }}
+                              onClick={createPdf}
+                            >
+                              Generate Certificate
+                            </button>
+                          </div>
+                        ) : (
+                          <div></div>
+                        )}
+                      </>
+                    ) : (
+                      <div></div>
+                    )}
+                  </>
                 )}
               </>
               // <iframe
@@ -216,9 +277,8 @@ export default function CourseVideo(props) {
 
           {/* {rnd === false ? ( */}
           <div className={styles.commentSection}>
-
             <h2>Comments</h2>
-            <button onClick={createPdf}>Create PDF</button>
+
             {comments.map((comment) => {
               return (
                 <div className={styles.comment}>

@@ -52,40 +52,7 @@ if(userdata.length!==0)
           rather its a heavy skill set or a raw concept of any aspect
         </p>
 
-        {valid !== null ? (
-          <div className={styles.highlighted + " container-center"}>
-            {courses.map((val, ind) => {
-              return (
-                <NavLink
-                  key={ind}
-                  to={`/course/courses/${val.playlistlink}/${val.id}/${userdata[0].videoid}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <Card>
-                    <img src={val.backimg} alt=""></img>
-                    <h4 className={styles.title}>{val.title}</h4>
-                    <p className={styles.description}>{val.description}</p>
-                    <span className={styles.price}>{val.price}</span>
-                  </Card>
-                </NavLink>
-              );
-            })}
-
-            {/* <NavLink
-          to="/course/PL55BQjLK6ZmhszWuypQ2kIjE9As2wrUIC"
-          style={{ textDecoration: "none" }}
-        >
-          <Card onClick={openCourse}>
-            <img src={webImg} alt=""></img>
-            <h4 className={styles.title}>Web Development</h4>
-            <p className={styles.description}>
-              A very very good Web Development course indeed. Good very good.
-            </p>
-            <span className={styles.price}>Free</span>
-          </Card>
-        </NavLink> */}
-          </div>
-        ) : (
+      
           <div className={styles.highlighted + " container-center"}>
             {courses.map((val, ind) => {
               return (
@@ -118,44 +85,16 @@ if(userdata.length!==0)
           </Card>
         </NavLink> */}
           </div>
-        )}
+
+
+  
 
         <h2>Courses in Demand</h2>
         <p>
           Based on our user reviews and quality of content, below is the list of
           top courses in demand
         </p>
-        {valid !== null ? (
-          <div className={styles.highlighted + " container-center"}>
-            {courses.map((val, ind) => {
-              if (val.coursedemand >= 10) {
-                let rate = val.rating;
-                console.log(rate);
-                return (
-                  <NavLink
-                    key={ind}
-                    to={`/course/courses/${val.playlistlink}/${val.id}/${userdata[0].videoid}`}
-                    style={{ textDecoration: "none" }}
-                  >
-                    {" "}
-                    <Card>
-                      <img src={val.backimg} alt=""></img>
-                      <h4 className={styles.courseTitle}>{val.title}</h4>
-                      <span className={styles.rating}>
-                        {rate >= 1 ? <IoStar /> : <div></div>}
-                        {rate >= 2 ? <IoStar /> : <div></div>}
-                        {rate >= 3 ? <IoStar /> : <div></div>}
-                        {rate >= 4 ? <IoStar /> : <div></div>}
-                        {rate >= 5 ? <IoStar /> : <div></div>}
-                      </span>
-                      <span className={styles.reviews}>{val.coursedemand}</span>
-                    </Card>
-                  </NavLink>
-                );
-              }
-            })}
-          </div>
-        ) : (
+    
           <div className={styles.highlighted + " container-center"}>
             {courses.map((val, ind) => {
               if (val.coursedemand >= 10) {
@@ -185,7 +124,7 @@ if(userdata.length!==0)
               }
             })}
           </div>
-        )}
+
 
         <h2>Affordabale Packages</h2>
         <div className={styles.highlighted + " container-center"}>

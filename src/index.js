@@ -12,8 +12,7 @@ import Login from "./pages/Login";
 import Quiz from "./pages/Quiz";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-const valid = localStorage.getItem("email");
-console.log(valid)
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
@@ -22,18 +21,14 @@ root.render(
         <Route path="/free-courses" element={<FreeCourses />} />
         <Route path="/paid-courses" element={<PaidCourses />} />{" "}
         <Route path="/teachers" element={<Teachers />} />
-        {valid === null ? (
-          <Route
-            path="/course/:course/:playlistid/:courseid"
-            element={<CourseVideo />}
-          />
-        ) : (
-          <Route
-            path="/course/:course/:playlistid/:courseid/:uservideoid"
-            element={<CourseVideo />}
-          />
-        )}
-          <Route  path="/course/:course/:playlistid/:courseid/:uservideoid/quiz" element={<Quiz/> } />
+        <Route
+          path="/course/:course/:playlistid/:courseid"
+          element={<CourseVideo />}
+        />
+        <Route
+          path="/course/:course/:playlistid/:courseid/:uservideoid/quiz/:quiznumber"
+          element={<Quiz />}
+        />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
       </Routes>
