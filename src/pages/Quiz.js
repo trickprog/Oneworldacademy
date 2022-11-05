@@ -55,19 +55,40 @@ export default function Quiz() {
     const id = localStorage.getItem("userid");
     const ref = doc(db, "users", id);
     let object = {};
+    if(course=='courses')
+    {
     if (quiznumber === "1") {
       object = {
-        quiz1: found.length,
+        bquiz1: found.length,
         videoid: "",
       };
     }
     if (quiznumber === "2") {
       object = {
-        quiz2: found.length,
-        completed:true,
+        bquiz2: found.length,
+        bcompleted:true,
         videoid: "",
       };
     }
+  }
+
+  if(course=='paidcourses')
+  {
+  if (quiznumber === "1") {
+    object = {
+      aquiz1: found.length,
+      videoid: "",
+    };
+  }
+  if (quiznumber === "2") {
+    object = {
+      aquiz2: found.length,
+      acompleted:true,
+      videoid: "",
+    };
+  }
+}
+
     await updateDoc(ref, object);
    navigate('/free-courses')
   };

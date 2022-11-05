@@ -86,7 +86,11 @@ margin-top: 300px;
     min-height: 100vh;
     /* border:1px solid green; */
 }
-
+textarea{
+    color:black;
+    font-size: larger;
+    padding: 5px;
+}
 @media (min-width: 950px) {
     .courseVideo {
         flex-direction: row;

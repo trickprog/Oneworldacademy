@@ -17,6 +17,7 @@ import {
   getDoc,
   addDoc,
   updateDoc,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../config";
 import { IoVolumeMediumOutline } from "react-icons/io5";
@@ -27,12 +28,13 @@ export default function CourseVideo(props) {
   const loginchk = localStorage.getItem("email");
   const [video, setvideo] = useState([]);
 
+  const [comment, setComment] = useState("");
+  const [getcomments, setgetomments] = useState([]);
+
   const [user, setuser] = useState([]);
   const [videoid, setvideoid] = useState("");
   const [videotumbnail, setvideotumbnail] = useState("");
   const [quiznumber, setquiznumber] = useState("");
-  const comments = [{ text: "Hello This is a comment", author: "User123" }];
-  const videos = [{ description: "This is another video" }];
 
   const { playlistid, course, courseid } = useParams();
 
@@ -42,10 +44,10 @@ export default function CourseVideo(props) {
     const id = localStorage.getItem("Uid");
     const ref = query(collection(db, "users"), where("userid", "==", id));
     const gettingdata = await getDocs(ref);
-    setuser(gettingdata.docs.map((doc) => doc.data()));
+    setuser(gettingdata.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
-  const getvideos = () => {
+  const getvideos = async () => {
     axios
       .get(
         `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=10&playlistId=${playlistid}&key=${key}`
@@ -55,6 +57,29 @@ export default function CourseVideo(props) {
         setvideo(video.data.items);
         setvideotumbnail(video.data.items[0].snippet.thumbnails.standard.url);
       });
+  };
+
+  const getComments = async () => {
+    const ref = query(
+      collection(db, `${course}/${courseid}/comments`),
+      orderBy("date", "desc")
+    );
+    const gettingdata = await getDocs(ref);
+    setgetomments(
+      gettingdata.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    );
+  };
+  const addcomment = async () => {
+    const name = localStorage.getItem("email");
+    const ref = collection(db, `${course}/${courseid}/comments`);
+    const commentdata = {
+      text: comment,
+      author: name,
+      date: new Date().toString(),
+    };
+    const data = await addDoc(ref, commentdata);
+    setComment("");
+    getComments();
   };
 
   const videoswitch = (id) => {
@@ -84,9 +109,10 @@ export default function CourseVideo(props) {
   };
 
   const addvideoid = async (videoid) => {
-    console.log('moiz')
+    console.log("moiz");
     const id = localStorage.getItem("userid");
     const ref = doc(db, "users", id);
+    console.log(videoid);
     await updateDoc(ref, {
       videoid: videoid,
     });
@@ -146,17 +172,20 @@ export default function CourseVideo(props) {
   useEffect(() => {
     getusersid();
     getvideos();
+    getComments();
+
   }, []);
   const quizupdate = () => {
     console.log("quiz call");
     console.log(user[0].videoid);
     console.log(video[4].snippet.resourceId.videoId);
+    let lastElement = video[video.length - 1];
     if (user[0].videoid === video[4].snippet.resourceId.videoId) {
       setchkquiz(true);
       setquiznumber("1");
     }
 
-    if (user[0].videoid === video[9].snippet.resourceId.videoId) {
+    if (user[0].videoid === lastElement.snippet.resourceId.videoId) {
       setchkquiz(true);
       setquiznumber("2");
     }
@@ -222,16 +251,74 @@ export default function CourseVideo(props) {
                           height="100%"
                           url={`https://www.youtube.com/watch?v=${videoid}`}
                         />
-                        {user[0].quiz1!==undefined ? (
-                          <div>
-                            <h1>Quiz 1 marks {user[0].quiz1}/20</h1>
+                        {course === "courses" ? (
+                          <>
+                            {user[0].bquiz1 !== undefined ? (
+                              <div>
+                                <h1>Quiz 1 marks {user[0].bquiz1}/20</h1>
+                              </div>
+                            ) : (
+                              <div></div>
+                            )}
+                            {user[0].bquiz2 !== undefined ? (
+                              <div>
+                                {" "}
+                                <h1>Quiz 2 marks {user[0].bquiz2}/20</h1>
+                              </div>
+                            ) : (
+                              <div></div>
+                            )}
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                        {course === "paidcourses" ? (
+                          <>
+                            {user[0].aquiz1 !== undefined ? (
+                              <div>
+                                <h1>Quiz 1 marks {user[0].aquiz1}/20</h1>
+                              </div>
+                            ) : (
+                              <div></div>
+                            )}
+                            {user[0].aquiz2 !== undefined ? (
+                              <div>
+                                {" "}
+                                <h1>Quiz 2 marks {user[0].aquiz2}/20</h1>
+                              </div>
+                            ) : (
+                              <div></div>
+                            )}
+                          </>
+                        ) : (
+                          <></>
+                        )}
+
+                        {user[0].bcompleted === true ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "end",
+                              marginTop: 10,
+                            }}
+                          >
+                            {" "}
+                            <button
+                              style={{
+                                padding: 10,
+                                borderRadius: 5,
+                                fontWeight: "bold",
+                                backgroundColor: "grey",
+                              }}
+                              onClick={createPdf}
+                            >
+                              Generate Certificate
+                            </button>
                           </div>
                         ) : (
                           <div></div>
                         )}
-                        {user[0].quiz2!==undefined ? <div> <h1>Quiz 2 marks {user[0].quiz2}/20</h1></div> : <div></div>}
-
-                        {user[0].completed === true ? (
+                        {user[0].acompleted === true ? (
                           <div
                             style={{
                               display: "flex",
@@ -278,8 +365,28 @@ export default function CourseVideo(props) {
           {/* {rnd === false ? ( */}
           <div className={styles.commentSection}>
             <h2>Comments</h2>
-
-            {comments.map((comment) => {
+            {loginchk ? (
+              <>
+                <textarea
+                  rows="6"
+                  cols="140"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Add Your Comment"
+                />
+                <div style={{ display: "flex", justifyContent: "end" }}>
+                  <button
+                    style={{ width: 80, padding: 5, backgroundColor: "grey" }}
+                    onClick={addcomment}
+                  >
+                    Post
+                  </button>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
+            {getcomments.map((comment) => {
               return (
                 <div className={styles.comment}>
                   <span>{comment.author}</span>

@@ -24,6 +24,7 @@ const FreeCourses = (props) => {
     const gettingdata = await getDocs(ref);
     console.log(gettingdata);
     setcourses(gettingdata.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    
   };
   let userid = "";
   const getusersid = async () => {

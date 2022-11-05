@@ -8,12 +8,12 @@ import mlImg from "../assets/mlImg.jpg";
 import uxImg from "../assets/uxImg.jpg";
 import programImg from "../assets/programImg.jpg";
 import Header from "../components/Header";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../config";
 import StripeCheckout from "react-stripe-checkout";
 const PaidCourses = (props) => {
   const navigate = useNavigate();
-
+  const [userdata, setuserdata] = useState([]);
   const [courses, setcourses] = useState([]);
   const getcourses = async () => {
     const ref = collection(db, "paidcourses");
@@ -24,7 +24,20 @@ const PaidCourses = (props) => {
 
   useEffect(() => {
     getcourses();
+    getusersid();
   }, []);
+
+  const getusersid = async () => {
+    const id = localStorage.getItem("Uid");
+    const ref = query(collection(db, "users"), where("userid", "==", id));
+    const gettingdata = await getDocs(ref);
+    console.log(gettingdata);
+    setuserdata(gettingdata.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+
+  if (userdata.length !== 0) {
+    localStorage.setItem("userid", userdata[0].id);
+  }
 
   return (
     <div className={styles.courses + ""}>
@@ -129,7 +142,12 @@ const PaidCourses = (props) => {
           <p className={styles.package}>Limited Courses</p>
           <p className={styles.package}>Complete Lectures</p>
           <p className={styles.package}>AI Assistance</p>
-          <StripeCheckout stripeKey={process.env.REACT_APP_STRIPE_KEY} token="" amount={300*100} name="Buy Package">
+          <StripeCheckout
+            stripeKey={process.env.REACT_APP_STRIPE_KEY}
+            token=""
+            amount={300 * 100}
+            name="Buy Package"
+          >
             <button className={styles.packageButton}>Buy Now</button>
           </StripeCheckout>
         </Card>
