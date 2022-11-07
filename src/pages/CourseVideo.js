@@ -429,19 +429,27 @@ export default function CourseVideo(props) {
               );
             }
           })}
-          <div style={{display:"flex", justifyContent:"end",marginRight:50}}>
-          <div style={{ }}>
-            <iframe
-              width="350"
-              height="430"
-              allow="microphone;"
-              src="https://console.dialogflow.com/api-client/demo/embedded/67c35400-87f2-4ab6-a444-045b6e2b9f90"
-            ></iframe>
-          </div>
+          {loginchk && course === "paidcourses" ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "end",
+                marginRight: 50,
+              }}
+            >
+              <div style={{}}>
+                <iframe
+                  width="350"
+                  height="430"
+                  allow="microphone;"
+                  src="https://console.dialogflow.com/api-client/demo/embedded/67c35400-87f2-4ab6-a444-045b6e2b9f90"
+                ></iframe>
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
-        </div>
-
-    
       </div>
     </>
   );
