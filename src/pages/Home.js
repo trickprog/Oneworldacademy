@@ -29,18 +29,17 @@ const Home = (props) => {
             environments
           </p>
         </div>
-        <div style={{ position: "relative" }}>
-        <div style={{ position: "absolute" ,bottom:0,right:0}}>
-          <iframe
-            width="350"
-            height="430"
-            allow="microphone;"
-            src="https://console.dialogflow.com/api-client/demo/embedded/67c35400-87f2-4ab6-a444-045b6e2b9f90"
-          ></iframe>
-        </div>
+        {/* <div style={{ position: "relative" }}>
+          <div style={{ position: "absolute", bottom: 0, right: 0 }}>
+            <iframe
+              width="350"
+              height="430"
+              allow="microphone;"
+              src="https://console.dialogflow.com/api-client/demo/embedded/67c35400-87f2-4ab6-a444-045b6e2b9f90"
+            ></iframe>
+          </div>
+        </div> */}
       </div>
-      </div>
-
     </>
   );
 };

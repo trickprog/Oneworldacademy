@@ -173,7 +173,6 @@ export default function CourseVideo(props) {
     getusersid();
     getvideos();
     getComments();
-
   }, []);
   const quizupdate = () => {
     console.log("quiz call");
@@ -365,15 +364,15 @@ export default function CourseVideo(props) {
           {/* {rnd === false ? ( */}
           <div className={styles.commentSection}>
             <h2>Comments</h2>
-            {loginchk ? (
+            {loginchk && course === "paidcourses" ? (
               <>
-                <textarea
-                  rows="6"
-                  cols="140"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  placeholder="Add Your Comment"
-                />
+                <div>
+                  <input
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="Add Your Comment"
+                  />
+                </div>
                 <div style={{ display: "flex", justifyContent: "end" }}>
                   <button
                     style={{ width: 80, padding: 5, backgroundColor: "grey" }}
@@ -430,7 +429,19 @@ export default function CourseVideo(props) {
               );
             }
           })}
+          <div style={{display:"flex", justifyContent:"end",marginRight:50}}>
+          <div style={{ }}>
+            <iframe
+              width="350"
+              height="430"
+              allow="microphone;"
+              src="https://console.dialogflow.com/api-client/demo/embedded/67c35400-87f2-4ab6-a444-045b6e2b9f90"
+            ></iframe>
+          </div>
         </div>
+        </div>
+
+    
       </div>
     </>
   );

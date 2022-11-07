@@ -86,17 +86,22 @@ margin-top: 300px;
     min-height: 100vh;
     /* border:1px solid green; */
 }
-textarea{
+input{
     color:black;
     font-size: larger;
+    background: rgb(197, 197, 197);
     padding: 5px;
+ 
 }
 @media (min-width: 950px) {
     .courseVideo {
         flex-direction: row;
+
     }
 
     .playlist {
         width: 30%;
-    }    
+        
+    }   
+
 }
