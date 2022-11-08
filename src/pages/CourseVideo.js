@@ -364,7 +364,7 @@ export default function CourseVideo(props) {
           {/* {rnd === false ? ( */}
           <div className={styles.commentSection}>
             <h2>Comments</h2>
-            {loginchk && course === "paidcourses" ? (
+            {loginchk? (
               <>
                 <div>
                   <input
